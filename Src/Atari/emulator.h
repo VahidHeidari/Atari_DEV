@@ -17,20 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
+#ifndef EMULATOR_H_
+#define EMULATOR_H_
 
-#ifndef DEBUGER_H_
-#define DEBUGER_H_
+#include "tia.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-void log_info(const char* str, ...);
-void log_warning(const char* str, ...);
-void log_error(const char* str, ...);
-
-void debug_message(const char* str, ...);
 
 #ifdef __cplusplus
 }

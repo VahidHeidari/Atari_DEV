@@ -86,6 +86,8 @@ void debug_message(const char* str, ...)
 	vprintf(str, args);
 	putchar('\n');
 	va_end(args);
+#else
+    (void)str;
 #endif
 }
 

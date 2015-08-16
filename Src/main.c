@@ -23,6 +23,7 @@
 #include "config.h"
 #include "debuger.h"
 #include "console.h"
+#include "emulator.h"
 
 #ifdef __cplusplus
 extern "C" {

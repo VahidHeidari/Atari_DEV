@@ -26,58 +26,58 @@
 extern "C" {
 #endif
 
-typedef unsigned char Reg;
-typedef unsigned char ColorLum;
+typedef uint8_t Reg;
+typedef uint8_t ColorLum;
 
 typedef union
 {
 	struct
 	{
-		ColorLum p0;		// P0, M0 (player0, Missile0)
-		ColorLum p1;		// P1, M1 (player1, Missile1)
-		ColorLum pf;		// PF, BL (playfield, ball)
-		ColorLum bk;		// BK     (background)
+		ColorLum p0;			// P0, M0 (player0, Missile0)
+		ColorLum p1;			// P1, M1 (player1, Missile1)
+		ColorLum pf;			// PF, BL (playfield, ball)
+		ColorLum bk;			// BK     (background)
 	} colorlum;
 
 	uint32_t colors;			// All colors
 
-} ColorLuminosity *pColorLuminosity;
+} ColorLuminosity, *pColorLuminosity;
 
-/// Play fiinosityeld registers are 20 bits wide
-typedef uniinosityon
+/// Play field registers are 20 bits wide
+typedef union
 {
 	struct
 	{
-		Reg pf0;			// PF0 is only 4 bits wide.
-		Reg pf1;			// PF1 constructs next 8 bits.
-		Reg pf2;			// PF2 constructs last 8 bits.
+		Reg pf0;				/// PF0 is only 4 bits wide.
+		Reg pf1;				/// PF1 constructs next 8 bits.
+		Reg pf2;				/// PF2 constructs last 8 bits.
 	} regs;
 
-	uint32_t raw;			// All registers
+	Reg raw[3];					/// All registers
 } PlayFieldRegs, *pPlayFieldRegs;
 
 typedef struct
 {
-	Reg gp;						// Player graphics register
-	Reg refp;					// Reflection player register
-	Reg vdelp;					// Vertical delay player register
+	Reg gp;						/// Player graphics register
+	Reg refp;					/// Reflection player register
+	Reg vdelp;					/// Vertical delay player register
 	Reg resp;
-	Reg hm;						// Horizontal motion register
+	Reg hm;						/// Horizontal motion register
 } Player, *pPlayer;
 
 typedef struct
 {
-	Reg enam;					// Enable missile register
-	Reg nusize;					// Number-size register
+	Reg enam;					/// Enable missile register
+	Reg nusize;					/// Number-size register
 	Reg resm;
-	Reg hm;						// Horizontal motion register
+	Reg hm;						/// Horizontal motion register
 } Missile, *pMissile;
 
 typedef struct
 {
 	Reg ball;
 	Reg resbl;
-	Reg hm;				// Horizontal motion register
+	Reg hm;						/// Horizontal motion register
 } Ball, *pBall;
 
 typedef union
@@ -89,26 +89,27 @@ typedef union
 	} regs;
 
 	Reg raw[2];
+    uint16_t all;
 } Collision, *pCollision;
 
 typedef struct
 {
-	Reg audc;					// Tone. 4 bit audio control
-	Reg audf;					// Frequency. 5 bit audio frequency register
-	Reg audv;					// Volume. 4 bit audio volume register
+	Reg audc;					/// Tone. 4 bit audio control
+	Reg audf;					/// Frequency. 5 bit audio frequency register
+	Reg audv;					/// Volume. 4 bit audio volume register
 } SoundRegs, *pSoundRegs;
 
 typedef union
 {
 	struct
 	{
-		// Dumped inputs
+		/// Dumped inputs
 		Reg _0;
 		Reg _1;
 		Reg _2;
 		Reg _3;
 
-		// Latched inputs
+		/// Latched inputs
 		Reg _4;
 		Reg _5;
 	} num;
@@ -126,13 +127,13 @@ typedef struct
 	Missile missile_1;
 	Ball ball;
 	
-	Reg wsync;					// Wait for SYNC
-	Reg ctlpf;					// Control Play Feild
-	Reg vdelpl;					// Vertical Delay Ball register
-	Reg hmclr;					// Horizontal Motion Clear register
-	Reg cxclr;					// Collision Reset register
+	Reg wsync;					/// Wait for SYNC
+	Reg ctlpf;					/// Control Play Feild
+	Reg vdelpl;					/// Vertical Delay Ball register
+	Reg hmclr;					/// Horizontal Motion Clear register
+	Reg cxclr;					/// Collision Reset register
 
-	Reg collision;
+	Collision collision;
 
 	SoundRegs sound_0;
 	SoundRegs sound_1;
