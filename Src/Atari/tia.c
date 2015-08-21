@@ -19,11 +19,17 @@
 
 #include "tia.h"
 
+#include "config.h"
+#include "emulator.h"
+#include "debuger.h"
+
 void tia_write(uint16_t addr, uint8_t value)
 {
 	switch (addr)
 	{
 		case WSYNC:
+			break;
+		case RSYNC:
 			break;
 		default:
 			break;
@@ -32,6 +38,12 @@ void tia_write(uint16_t addr, uint8_t value)
 
 uint8_t tia_read(uint16_t addr)
 {
+	if (addr <= CXPPMM)
+		return tia.collition.raw[addr];
+	else if (addr <= INPT5)
+		return tia.input.raw[addr - INPT0];
+
+	log_error("Reading invalid address of 0x%04x of tia", addr);
 	return 0;
 }
 

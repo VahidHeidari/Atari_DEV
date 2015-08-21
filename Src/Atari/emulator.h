@@ -26,6 +26,8 @@
 extern "C" {
 #endif
 
+extern TIA tia;
+
 #ifdef __cplusplus
 }
 #endif

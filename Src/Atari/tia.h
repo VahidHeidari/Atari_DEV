@@ -72,6 +72,7 @@ extern "C" {
 typedef uint8_t Reg;
 typedef uint8_t ColorLum;
 
+/// Color luminosity
 typedef union
 {
 	struct
@@ -99,6 +100,7 @@ typedef union
 	Reg raw[3];					/// All registers
 } PlayFieldRegs, *pPlayFieldRegs;
 
+/// Player
 typedef struct
 {
 	Reg gp;						/// Player graphics register
@@ -108,6 +110,7 @@ typedef struct
 	Reg hm;						/// Horizontal motion register
 } Player, *pPlayer;
 
+/// Missile
 typedef struct
 {
 	Reg enam;					/// Enable missile register
@@ -116,6 +119,7 @@ typedef struct
 	Reg hm;						/// Horizontal motion register
 } Missile, *pMissile;
 
+/// Ball
 typedef struct
 {
 	Reg ball;
@@ -123,18 +127,25 @@ typedef struct
 	Reg hm;						/// Horizontal motion register
 } Ball, *pBall;
 
+/// Collision
 typedef union
 {
 	struct
 	{
-		Reg _0;
-		Reg _1;
+		Reg cxm0p;
+		Reg cxm1p;
+		Reg cxp0fb;
+		Reg cxp1fb;
+		Reg cxm0fb;
+		Reg cxm1fb;
+		Reg cxblpf;
+		Reg cxppmm;
 	} regs;
 
-	Reg raw[2];
-    uint16_t all;
+	Reg raw[8];
 } Collision, *pCollision;
 
+/// Sound registers
 typedef struct
 {
 	Reg audc;					/// Tone. 4 bit audio control
@@ -142,20 +153,21 @@ typedef struct
 	Reg audv;					/// Volume. 4 bit audio volume register
 } SoundRegs, *pSoundRegs;
 
+/// Input
 typedef union
 {
 	struct
 	{
 		/// Dumped inputs
-		Reg _0;
-		Reg _1;
-		Reg _2;
-		Reg _3;
+		Reg inpt0;
+		Reg inpt1;
+		Reg inpt2;
+		Reg inpt3;
 
 		/// Latched inputs
-		Reg _4;
-		Reg _5;
-	} num;
+		Reg inpt4;
+		Reg inpt5;
+	} regs;
 
 	Reg raw[6];
 } InputPort, *pInputPort;
@@ -184,7 +196,7 @@ typedef struct
 } TIA, *pTIA;
 
 void tia_write(uint16_t addr, uint8_t value);
-uint8_t read(uint16_t addr);
+uint8_t tia_read(uint16_t addr);
 
 #ifdef __cplusplus
 }

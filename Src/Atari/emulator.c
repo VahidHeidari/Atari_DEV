@@ -19,3 +19,5 @@
 
 #include "emulator.h"
 
+TIA tia;
+
