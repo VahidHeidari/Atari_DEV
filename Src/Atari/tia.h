@@ -26,6 +26,49 @@
 extern "C" {
 #endif
 
+#define NUM_HORIZONTAL_LINES		262
+#define NUM_VSYNC					3
+#define NUM_VBLANK					37
+#define NUM_TV_PICTURE_LINES		192
+#define NUM_OVER_SCAN_LINES			30
+
+#define CLOCK_LINE					228
+#define CLOCK_HBLANK				68
+#define CLOCK_VISIBLE				160
+/// 1 CPU clock = 3 TIA clocks (228 / 3) = 76
+#define CLOCK_CPU					76
+#define CLOCK_FREQUENCY_MHZ			3.58
+#define CLOCK_FREQUENCY				3580000
+
+/// Write address
+#define VSYNC		0x0000
+#define VBLANK		0x0001
+#define WSYNC		0x0002
+#define RSYNC		0x0003
+#define NUSIZ0		0x0004
+#define NUSIZ1		0x0005
+#define COLUP0		0x0006
+#define COLUP1		0x0007
+#define COLUPF		0x0008
+#define COLUBK		0x0009
+#define CTRLPF		0x000A
+
+/// Read address
+#define CXM0P		0x0000
+#define CXM1P		0x0001
+#define CXP0FB		0x0002
+#define CXP1FB		0x0003
+#define CXM0FB		0x0004
+#define CXM1FB		0x0005
+#define CXBLPF		0x0006
+#define CXPPMM		0x0007
+#define INPT0		0x0008
+#define INPT1		0x0009
+#define INPT2		0x000A
+#define INPT3		0x000B
+#define INPT4		0x000C
+#define INPT5		0x000D
+
 typedef uint8_t Reg;
 typedef uint8_t ColorLum;
 
@@ -127,7 +170,6 @@ typedef struct
 	Missile missile_1;
 	Ball ball;
 	
-	Reg wsync;					/// Wait for SYNC
 	Reg ctlpf;					/// Control Play Feild
 	Reg vdelpl;					/// Vertical Delay Ball register
 	Reg hmclr;					/// Horizontal Motion Clear register
@@ -140,6 +182,9 @@ typedef struct
 
 	InputPort input;
 } TIA, *pTIA;
+
+void tia_write(uint16_t addr, uint8_t value);
+uint8_t read(uint16_t addr);
 
 #ifdef __cplusplus
 }
