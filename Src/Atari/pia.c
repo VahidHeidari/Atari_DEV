@@ -17,24 +17,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMULATOR_H_
-#define EMULATOR_H_
-
-#include "tia.h"
 #include "pia.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "emulator.h"
 
-extern TIA tia;
-extern PIA pia;
-
-extern long long clock_cycle;
-
-#ifdef __cplusplus
+void pia_write(uint16_t addr, uint8_t value)
+{
+	switch (addr)
+	{
+		case TIM1T : pia.timer.setting = Time1t; break;
+		case TIM8T : pia.timer.setting = Time8t; break;
+		case TIM64T: pia.timer.setting = Time64t; break;
+		case T1024T: pia.timer.setting = Time1024t; break;
+	}
+	pia.timer.time = value;
+	pia.timer.start_time = clock_cycle;
 }
-#endif
 
-#endif
+uint8_t pia_read(uint16_t addr)
+{
+	if (addr == INTIM)
+		return pia.timer.time;
+
+	return 0;
+}
+
+void pia_clock(void)
+{
+}
 

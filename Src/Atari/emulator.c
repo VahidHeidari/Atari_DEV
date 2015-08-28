@@ -20,4 +20,7 @@
 #include "emulator.h"
 
 TIA tia;
+PIA pia;
+
+long long clock_cycle;
 
