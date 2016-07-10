@@ -19,7 +19,20 @@
 
 #include "pia.h"
 
+#include <string.h>
+
 #include "emulator.h"
+
+int pia_init(pPIA pia)
+{
+	memset(pia, 0, sizeof(PIA));
+	return 1;
+}
+
+void pia_close(pPIA pia)
+{
+	(void)pia;
+}
 
 void pia_write(uint16_t addr, uint8_t value)
 {

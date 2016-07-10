@@ -19,8 +19,67 @@
 
 #include "emulator.h"
 
-TIA tia;
+P6502 p;
 PIA pia;
+TIA tia;
 
 long long clock_cycle;
+int finished_emulation;
+
+int emulator_init(void)
+{
+	finished_emulation = 0;
+
+	if (pia_init(&pia) != 1)
+		return 0;
+
+	if (tia_init(&tia) != 1)
+		return 0;
+
+	power_on(&p);
+
+	return 1;
+}
+
+void emulator_close(void)
+{
+	finished_emulation = 1;
+}
+
+int emulator_save_state(const char* path)
+{
+	(void)path;
+	return 1;
+}
+
+int emulator_load_state(const char* path)
+{
+	(void)path;
+	return 1;
+}
+
+int emulator_read_rom_image(const char* path)
+{
+	(void)path;
+	return 1;
+}
+
+void step(void)
+{
+	fetch(&p);
+}
+
+void run(void)
+{
+	while (!finished_emulation)
+		step();
+}
+
+void run_cycles(int cycles)
+{
+	long long end_cycle = p.cycle_counter + cycles;
+
+	while (p.cycle_counter < end_cycle && !finished_emulation)
+		step();
+}
 

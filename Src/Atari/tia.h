@@ -229,6 +229,8 @@ typedef struct
 	InputPort input;
 } TIA, *pTIA;
 
+int tia_init(pTIA tia);
+void tia_close(pTIA tia);
 void tia_write(uint16_t addr, uint8_t value);
 uint8_t tia_read(uint16_t addr);
 
