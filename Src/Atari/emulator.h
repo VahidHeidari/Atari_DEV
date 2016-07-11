@@ -27,10 +27,16 @@
 extern "C" {
 #endif
 
-extern TIA tia;
-extern PIA pia;
+typedef struct
+{
+	long long clock_cycle;
+	int hsync_counter;
 
-extern long long clock_cycle;
+	TIA tia;
+	PIA pia;
+} Atari2600, *pAtari2600;
+
+extern Atari2600 atari_2600;
 
 #ifdef __cplusplus
 }

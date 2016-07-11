@@ -27,11 +27,46 @@ void tia_write(uint16_t addr, uint8_t value)
 {
 	switch (addr)
 	{
-		case WSYNC:
+		// Strobe addresses
+		// Wait for leading edge of horizontal blank.
+		case WSYNC: break;
+
+		// Reset horizontal sync counter.
+		case RSYNC: break;
+
+		// Reset player 0.
+		case RESP0: break;
+
+		// Reset player 1.
+		case RESP1: break;
+
+		// Reset missile 0.
+		case RESM0: break;
+
+		// Reset missile 1.
+		case RESM1: break;
+
+		// Reset ball.
+		case RESBL: break;
+
+		// Apply horizontal motion.
+		case HMOVE: break;
+
+		// Clear horizontal motion registers.
+		case HMCLR: break;
+
+		// Clear collision latches.
+		case CXCLR: 
+			atari_2600.tia.collision.raw[0] = atari_2600.tia.collision.raw[1] =
+			atari_2600.tia.collision.raw[2] = atari_2600.tia.collision.raw[3] =
+			atari_2600.tia.collision.raw[4] = atari_2600.tia.collision.raw[5] =
+			atari_2600.tia.collision.raw[6] = atari_2600.tia.collision.raw[7] = 0;
 			break;
-		case RSYNC:
-			break;
+
+		// Other addresses
+
 		default:
+			log_error("Invalid write to TIA value of 0x%02x at $%04x.", value, addr);
 			break;
 	}
 }
@@ -43,7 +78,7 @@ uint8_t tia_read(uint16_t addr)
 	else if (addr <= INPT5)
 		return tia.input.raw[addr - INPT0];
 
-	log_error("Reading invalid address of 0x%04x of tia", addr);
+	log_error("Reading invalid address of 0x%04x of TIA", addr);
 	return 0;
 }
 
