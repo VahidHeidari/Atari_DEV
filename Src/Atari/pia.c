@@ -50,7 +50,7 @@ void pia_write(uint16_t addr, uint8_t value)
 uint8_t pia_read(uint16_t addr)
 {
 	if (addr == INTIM)
-		return atari_2600.pia.timer.time;
+		return (uint8_t)atari_2600.pia.timer.time;
 
 	return 0;
 }

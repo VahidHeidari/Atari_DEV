@@ -340,6 +340,12 @@ void power_on(pP6502 p)
 
 void fetch(pP6502 p)
 {
+// Disable -Wconversion for this fucntion temporary.
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 	uint8_t src;				// Source data temporary.
 	TwoByteReg result, addr;	// Temporary result of operations and effective address.
 	uint8_t instruction;		// Fetch opcode and set PC to next instruction automatically.
@@ -761,6 +767,11 @@ void fetch(pP6502 p)
 			debug_message("\nUndefined opcode at 0x%04X : 0x%02X at cc : %d", p->pc.w - 1, instruction, p->cycle_counter);
 			break;
 	}
+
+// Enable warning again
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 	p->cycle_counter += ins_cycles;
 	p->ins_cycles = ins_cycles;

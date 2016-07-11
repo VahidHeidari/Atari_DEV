@@ -39,7 +39,7 @@ add_executable(Atari_DEV
 if(MSVC)
     set_property(TARGET Atari_DEV APPEND_STRING PROPERTY COMPILE_FLAGS /W3)
 elseif(CMAKE_COMPILER_IS_GNUCC)
-	add_definitions(-Wall -Wextra -pedantic -Werror -std=c99)
+	add_definitions(-Wall -Wextra -Wconversion -pedantic -Werror -std=c99)
     target_link_libraries(Atari_DEV SDL2 SDL2main)
 
 	if (CMAKE_SYSTEM_NAME STREQUAL Windows)
