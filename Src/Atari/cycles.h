@@ -1,5 +1,5 @@
 /**
- * Atari_DEV is a cross-platform, portable, and hand-held Atari 2600 emulator.
+ * NES_DEV is a cross-platform, portable, and hand-held NES emulator.
  *
  * Copyright (C) 2015  Vahid Heidari (DeltaCode)
  * 
@@ -17,37 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMULATOR_H_
-#define EMULATOR_H_
+#ifndef CYCLES_H
+#define CYCLES_H
 
-#include "p6502.h"
-#include "pia.h"
-#include "tia.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct
-{
-	int hsync_counter;
-
-	P6502 p;
-	PIA pia;
-	TIA tia;
-} Atari2600, *pAtari2600;
-
-extern Atari2600 atari_2600;
-extern int finished_emulation;
-
-int emulator_init(void);
-void emulator_close(void);
-int emulator_save_state(const char* path);
-int emulator_load_state(const char* path);
-int emulator_read_rom_image(const char* path);
-void step(void);
-void run(void);
-void run_cycles(int cycles);
+extern const uint8_t cycles[256];
+extern const uint8_t op_size[256];
 
 #ifdef __cplusplus
 }

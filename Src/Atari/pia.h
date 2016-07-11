@@ -95,6 +95,8 @@ typedef struct
 	uint8_t RAM[PIA_RAM_SIZE];
 } PIA, *pPIA;
 
+int pia_init(pPIA pia);
+void pia_close(pPIA pia);
 void pia_write(uint16_t addr, uint8_t value);
 uint8_t pia_read(uint16_t addr);
 void pia_clock(void);

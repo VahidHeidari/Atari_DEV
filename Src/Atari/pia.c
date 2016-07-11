@@ -19,25 +19,38 @@
 
 #include "pia.h"
 
+#include <string.h>
+
 #include "emulator.h"
+
+int pia_init(pPIA pia)
+{
+	memset(pia, 0, sizeof(PIA));
+	return 1;
+}
+
+void pia_close(pPIA pia)
+{
+	(void)pia;
+}
 
 void pia_write(uint16_t addr, uint8_t value)
 {
 	switch (addr)
 	{
-		case TIM1T : pia.timer.setting = Time1t; break;
-		case TIM8T : pia.timer.setting = Time8t; break;
-		case TIM64T: pia.timer.setting = Time64t; break;
-		case T1024T: pia.timer.setting = Time1024t; break;
+		case TIM1T : atari_2600.pia.timer.setting = Time1t; break;
+		case TIM8T : atari_2600.pia.timer.setting = Time8t; break;
+		case TIM64T: atari_2600.pia.timer.setting = Time64t; break;
+		case T1024T: atari_2600.pia.timer.setting = Time1024t; break;
 	}
-	pia.timer.time = value;
-	pia.timer.start_time = clock_cycle;
+	atari_2600.pia.timer.time = value;
+	atari_2600.pia.timer.start_time = atari_2600.p.cycle_counter;
 }
 
 uint8_t pia_read(uint16_t addr)
 {
 	if (addr == INTIM)
-		return pia.timer.time;
+		return atari_2600.pia.timer.time;
 
 	return 0;
 }

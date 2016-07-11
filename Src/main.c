@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+#include <stdlib.h>
 #include <stdio.h>
 
 #include "config.h"
@@ -29,18 +29,95 @@
 extern "C" {
 #endif
 
+void print_regs(pP6502 p)
+{
+	printf("    A  : %02X            PC : %04X\n", p->a, p->pc.w);
+	printf("    X  : %02X            P  : %02X\n", p->x, p->p);
+	printf("    Y  : %02X            N V   B D I Z C\n", p->y);
+	printf("    SP : %02X            %c %c %c %c %c %c %c %c\n",
+			p->sp,
+			p->p & N_FLAG ? '1' : '0',
+			p->p & V_FLAG ? '1' : '0',
+			p->p & FLAG_1 ? '1' : '0',
+			p->p & B_FLAG ? '1' : '0',
+			p->p & D_FLAG ? '1' : '0',
+			p->p & I_FLAG ? '1' : '0',
+			p->p & Z_FLAG ? '1' : '0',
+			p->p & C_FLAG ? '1' : '0');
+	printf("    cc : %d\n\n", p->cycle_counter);
+}
+
+void update_regs(void)
+{
+	gotoxy(REGS_X, REGS_Y);
+	print_regs(&atari_2600.p);
+}
+
 int main(int argc, char** argv)
 {
 	int i;
+	int cmd;
+	unsigned int val;
+	unsigned int addr;
 
-	init_console();
-	
     printf("This is Atari 2600 emulator!\n\n");
 	
 	// Print command line arguments.
 	debug_message("argc : %d", argc);
+#if DEBUG_MODE
 	for (i = 0; i < argc; ++i)
 		debug_message("argv[%2d] : %s", i, argv[i]);
+#endif
+
+	if (argc < 2) {
+		printf("Emulation failed! No ROM image supplied!\n");
+		return 1;
+	}
+
+	if (emulator_init() != 1) {
+		printf("Emulator initialization failed!\n");
+		return 1;
+	}
+
+	init_console();
+	gotoxy(REGS_X, REGS_Y);
+	update_regs();
+
+	while (!finished_emulation) {
+		clear_cmd_line();
+		cmd = getch();
+
+		switch (cmd) {
+			case 'q':
+			case 'Q':
+				finished_emulation = 1;
+				break;
+
+			case 's':
+			case 'S':
+				step();
+				update_regs();
+				break;
+
+			case 'c':
+			case 'C':
+				if (scanf_s("%u", &val)) {
+					run_cycles((int)val);
+					update_regs();
+				}
+				break;
+
+			case 'r':
+			case 'R':
+				if (scanf_s("%4x", &addr)) {
+					val = read((uint16_t)addr);
+					printf("    $%04x : $%02x", addr, val);
+				}
+				break;
+		}
+	}
+
+	emulator_close();
 
     return 0;
 }

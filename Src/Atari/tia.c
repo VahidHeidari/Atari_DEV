@@ -19,12 +19,27 @@
 
 #include "tia.h"
 
+#include <string.h>
+
 #include "config.h"
 #include "emulator.h"
 #include "debuger.h"
 
+int tia_init(pTIA tia)
+{
+	memset(tia, 0, sizeof(TIA));
+	return 1;
+}
+
+void tia_close(pTIA tia)
+{
+	(void)tia;
+}
+
 void tia_write(uint16_t addr, uint8_t value)
 {
+	(void)value;
+
 	switch (addr)
 	{
 		// Strobe addresses
@@ -74,9 +89,9 @@ void tia_write(uint16_t addr, uint8_t value)
 uint8_t tia_read(uint16_t addr)
 {
 	if (addr <= CXPPMM)
-		return tia.collition.raw[addr];
+		return atari_2600.tia.collision.raw[addr];
 	else if (addr <= INPT5)
-		return tia.input.raw[addr - INPT0];
+		return atari_2600.tia.input.raw[addr - INPT0];
 
 	log_error("Reading invalid address of 0x%04x of TIA", addr);
 	return 0;
